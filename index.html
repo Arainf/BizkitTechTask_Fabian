@@ -14,22 +14,23 @@
     .message { margin-top: 16px; padding: 10px; border-radius: 6px; }
     .ok { background: #e6f4ea; color: #1e7e34; }
     .err { background: #fdecea; color: #c0392b; }
+    .required { color: red;}
   </style>
 </head>
 <body>
   <h1>Book Equipment</h1>
 
-  <label for="equipment">Equipment</label>
-  <select id="equipment"></select>
+  <label for="equipment">Equipment<span class="required">*</span></label>
+  <select id="equipment" required></select>
 
-  <label for="customer">Customer name</label>
-  <input id="customer" type="text" placeholder="e.g. Jane Doe" />
+  <label for="customer">Customer name<span class="required">*</span></label>
+  <input id="customer" type="text" placeholder="e.g. Jane Doe" required/>
 
-  <label for="from">Start date</label>
-  <input id="from" type="date" />
+  <label for="from">Start date<span class="required">*</span></label>
+  <input id="from" type="date" required/>
 
-  <label for="to">End date</label>
-  <input id="to" type="date" />
+  <label for="to">End date<span class="required">*</span></label>
+  <input id="to" type="date" required />
 
   <div class="total" id="total">Total: PHP 0.00</div>
 
@@ -106,11 +107,35 @@
       messageEl.className = "";
       messageEl.textContent = "";
 
+      const equipmentEl = document.getElementById("equipment");
+      const customerEl = document.getElementById("customer");
+      const fromEl = document.getElementById("from");
+      const toEl = document.getElementById("to");
+
+      // Required field validation
+      const missing = [];
+      if (!equipmentEl.value) missing.push("Equipment");
+      if (!customerEl.value.trim()) missing.push("Customer name");
+      if (!fromEl.value) missing.push("Start date");
+      if (!toEl.value) missing.push("End date");
+      if (missing.length > 0) {
+          messageEl.className = "message err";
+          messageEl.textContent = `Please fill in: ${missing.join(", ")}`;
+          return;
+      }
+
+      // Date order validation
+      if (toEl.value < fromEl.value) {
+          messageEl.className = "message err";
+          messageEl.textContent = "End date cannot be before start date.";
+          return;
+      }
+
       const body = {
-        equipment_id: Number(document.getElementById("equipment").value),
-        customer: document.getElementById("customer").value,
-        from_date: document.getElementById("from").value,
-        to_date: document.getElementById("to").value,
+        equipment_id: Number(equipmentEl.value),
+        customer: customerEl.value.trim(),
+        from_date: fromEl.value,
+        to_date: toEl.value,
       };
 
       const res = await fetch("/api/bookings", {
