@@ -40,7 +40,7 @@
   <script>
     let equipmentList = [];
 
-    async function loadEquipment() {
+   async function loadEquipment() {
       const res = await fetch("/api/equipment");
       equipmentList = await res.json();
       const select = document.getElementById("equipment");
@@ -48,7 +48,13 @@
       equipmentList.forEach(item => {
         const opt = document.createElement("option");
         opt.value = item.id;
-        opt.textContent = `${item.name} (PHP ${item.daily_rate}/day)`;
+        if (item.status === "maintenance"){
+          opt.textContent = `${item.name} (PHP ${item.daily_rate}/day) : under ${item.status} `;
+          opt.disabled = true;
+        } else {
+          opt.textContent = `${item.name} (PHP ${item.daily_rate}/day)`;
+        }
+      
         select.appendChild(opt);
       });
     }
