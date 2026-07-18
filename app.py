@@ -75,10 +75,12 @@ def rental_days(from_date, to_date):
 def dates_overlap(start_a, end_a, start_b, end_b):
     """True if date range A conflicts with date range B (see the
     same-day-turnover rule above).
-
-    TODO (Task 1): implement.
     """
-    raise NotImplementedError
+
+    if start_a < end_b and start_b < end_a:
+        return True
+    else:
+        return False
 
 
 def find_conflicting_booking(equipment_id, from_date, to_date, bookings):
