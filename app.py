@@ -67,7 +67,7 @@ def parse_date(value):
 def rental_days(from_date, to_date):
     """Number of days this rental covers (see business rules above).
     """
-    
+
     rental_days = 0
 
     delta = to_date - from_date
@@ -108,10 +108,19 @@ def find_conflicting_booking(equipment_id, from_date, to_date, bookings):
 def calculate_total(daily_rate, days):
     """Total price for a rental of this many days (see the long-rental
     discount rule above).
-
-    TODO (Task 2): implement.
     """
-    raise NotImplementedError
+
+    total_price = 0
+
+    if days >= 7:
+        price = daily_rate * days
+        discount = price * .10
+        total_price = price - discount
+    else:
+        total_price = daily_rate * days
+
+    return total_price
+    
 
 
 # ---------------------------------------------------------------------------
