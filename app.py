@@ -91,7 +91,7 @@ def find_conflicting_booking(equipment_id, from_date, to_date, bookings):
     """Return an existing, non-cancelled booking for this equipment that
     conflicts with the given dates, or None.
     """
-     if not equipment_id:
+    if not equipment_id:
         return None
 
     for booking in bookings:
