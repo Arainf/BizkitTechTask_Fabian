@@ -66,10 +66,14 @@ def parse_date(value):
 
 def rental_days(from_date, to_date):
     """Number of days this rental covers (see business rules above).
-
-    TODO (Task 1): implement.
     """
-    raise NotImplementedError
+    
+    rental_days = 0
+
+    delta = to_date - from_date
+    rental_days = delta.days + 1
+
+    return rental_days
 
 
 def dates_overlap(start_a, end_a, start_b, end_b):
