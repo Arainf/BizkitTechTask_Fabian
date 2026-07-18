@@ -85,8 +85,20 @@
         totalEl.textContent = "Total: PHP 0.00";
         return;
       }
-      const total = equipment.daily_rate * days;
-      totalEl.textContent = `Total: PHP ${total.toFixed(2)} (${days} day${days > 1 ? "s" : ""})`;
+      let discount = 0;
+      let total = 0;
+      let price = equipment.daily_rate * days;
+      
+      if (days >= 7 ){
+        discount = price * .10;
+        total = price - discount;
+      } else {
+        total = price;
+      }
+    
+      totalEl.textContent = days >= 7
+      ? `Total: PHP ${total.toFixed(2)} (${days} days, 10% off — PHP ${discount.toFixed(2)} saved)`
+      : `Total: PHP ${total.toFixed(2)} (${days} day${days > 1 ? "s" : ""})`;
     }
 
     async function createBooking() {
